@@ -1,8 +1,16 @@
 {
-  "lerna": "2.11.0",
   "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.md",
+        "docs"
+      ],
+      "message": "chore(release): publish %s"
+    }
+  },
   "packages": [
     "."
   ],
-  "version": "0.1.2"
+  "version": "independent"
 }
