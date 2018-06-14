@@ -471,3 +471,35 @@ Throws an error and exits with code 1 if something&#x27;s not right in your gard
 
     garden validate 
 
+### garden new
+
+Creates scaffolding for a new Garden project..
+
+The New command walks the user through setting up a new Garden project and generates scaffolding based on user
+input.
+
+Examples:
+
+    garden new # scaffolds a new Garden project in the current directory (project name defaults to directory name)
+    garden new my-project # scaffolds a new Garden project named my-project in the current directory
+    garden new my-project --module-dirs&#x3D;. # scaffolds a new Garden project and looks for modules
+    in the current directory
+    garden new my-existing-project --module-dirs&#x3D;services # scaffolds a new Garden project and looks for modules
+    in the services directory
+
+##### Usage
+
+    garden new [projectName] [options]
+
+##### Arguments
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+  | `projectName` | No | The name of the project, (defaults to project root directory name)
+
+##### Options
+
+| Argument | Alias | Type | Description |
+| -------- | ----- | ---- | ----------- |
+  | `--module-dirs` |  | string | Directory of module(s)
+

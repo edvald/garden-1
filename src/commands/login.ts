@@ -10,7 +10,7 @@ import {
   Command,
   CommandResult,
 } from "./base"
-import { EntryStyle } from "../logger/types"
+import { LoggerType } from "../logger/types"
 import { PluginContext } from "../plugin-context"
 import { LoginStatusMap } from "../types/plugin/outputs"
 import dedent = require("dedent")
@@ -18,6 +18,8 @@ import dedent = require("dedent")
 export class LoginCommand extends Command {
   name = "login"
   help = "Log into configured providers for this project and environment."
+
+  loggerType = LoggerType.basic
 
   description = dedent`
     Executes the login flow for any provider that requires login (such as the \`kubernetes\` provider).
@@ -29,7 +31,7 @@ export class LoginCommand extends Command {
 
   async action(ctx: PluginContext): Promise<CommandResult<LoginStatusMap>> {
     ctx.log.header({ emoji: "unlock", command: "Login" })
-    ctx.log.info({ msg: "Logging in...", entryStyle: EntryStyle.activity })
+    ctx.log.info("Logging in...")
 
     const result = await ctx.login({})
 

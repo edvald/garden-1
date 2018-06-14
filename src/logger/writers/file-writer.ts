@@ -91,6 +91,7 @@ export class FileWriter extends Writer {
   render(entry: LogEntry): string | null {
     if (validate(this.level, entry)) {
       const renderFn = entry.level === LogLevel.error ? renderError : renderMsg
+      // FIXME Doesn't always strip ansi
       return stripAnsi(renderFn(entry))
     }
     return null

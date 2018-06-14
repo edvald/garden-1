@@ -22,6 +22,7 @@ import { ScanCommand } from "./scan"
 import { StatusCommand } from "./status"
 import { TestCommand } from "./test"
 import { ValidateCommand } from "./validate"
+import { NewCommand } from "./new"
 
 export const coreCommands: Command[] = [
   new BuildCommand(),
@@ -39,4 +40,5 @@ export const coreCommands: Command[] = [
   new StatusCommand(),
   new TestCommand(),
   new ValidateCommand(),
+  new NewCommand(),
 ]

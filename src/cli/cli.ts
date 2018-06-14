@@ -33,7 +33,7 @@ import {
   PluginError,
   toGardenError,
 } from "../exceptions"
-import { Garden } from "../garden"
+import { Garden, ContextOpts } from "../garden"
 
 import { RootLogNode, getLogger } from "../logger"
 import { LogLevel, LoggerType } from "../logger/types"
@@ -53,6 +53,8 @@ import {
   prepareOptionConfig,
   styleConfig,
 } from "./helpers"
+import { GardenConfig } from "../types/config"
+import { defaultEnvironments } from "../types/project"
 
 const OUTPUT_RENDERERS = {
   json: (data: DeepPrimitiveMap) => {
@@ -90,6 +92,25 @@ export const GLOBAL_OPTIONS = {
 const GLOBAL_OPTIONS_GROUP_NAME = "Global options"
 const ERROR_LOG_FILENAME = "error.log"
 const DEFAULT_CLI_LOGGER_TYPE = LoggerType.fancy
+
+const MOCK_CONFIG: GardenConfig = {
+  version: "0",
+  dirname: "/",
+  path: "/",
+  project: {
+    name: "asdf",
+    defaultEnvironment: "local",
+    environments: defaultEnvironments,
+    environmentDefaults: {
+      providers: [
+        {
+          name: "local-kubernetes",
+        },
+      ],
+      variables: {},
+    },
+  },
+}
 
 export interface ParseResults {
   argv: any
@@ -170,6 +191,7 @@ export class GardenCli {
       // Sywac returns positional args and options in a single object which we separate into args and opts
       const parsedArgs = filterByArray(argv, argKeys)
       const parsedOpts = filterByArray(argv, optKeys.concat(globalKeys))
+      // FIXME: This doesn't look right
       const root = resolve(process.cwd(), parsedOpts.root)
       const { env, loglevel, silent, output } = parsedOpts
 
@@ -209,7 +231,11 @@ export class GardenCli {
       let garden
       let result
       do {
-        garden = await Garden.factory(root, { env, logger })
+        const contextOpts: ContextOpts = { env, logger }
+        if (command.runWithoutConfig) {
+          contextOpts.config = MOCK_CONFIG
+        }
+        garden = await Garden.factory(root, contextOpts)
         // TODO: enforce that commands always output DeepPrimitiveMap
         result = await command.action(garden.pluginContext, parsedArgs, parsedOpts)
       } while (result.restartRequired)

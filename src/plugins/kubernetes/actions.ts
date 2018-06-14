@@ -464,6 +464,7 @@ export async function login({ ctx }: PluginActionParamsBase): Promise<LoginStatu
         }
         return true
       },
+      filter: input => input.trim(),
     })
   }
   const choicesPrompt = async () => {

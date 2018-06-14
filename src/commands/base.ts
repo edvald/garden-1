@@ -141,6 +141,7 @@ export abstract class Command<T extends Parameters = {}, U extends Parameters = 
 
   alias?: string
   loggerType?: LoggerType
+  runWithoutConfig?: boolean
 
   arguments?: T
   options?: U
